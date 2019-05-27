@@ -14,6 +14,12 @@ def publish(broker_address="localhost", port=1883, topic="default_topic", messag
     return True
 
 
+def basic_publish(topic="default_topic", message="default_message"):
+    publisher = mqtt.Client("Basic")
+    publisher.connect("localhost", 1883)
+    publisher.publish(topic, message)
+
+
 def on_message(client, userdata, message):
     print("message received ", str(message.payload.decode("utf-8")))
     print("message topic=", message.topic)
@@ -26,4 +32,11 @@ def subscribe(broker_address="localhost", port=1883, topic="default_topic", clie
     subscriber = mqtt.Client(client_name)
     subscriber.on_message = on_message_function
     subscriber.connect(broker_address, port)
+    subscriber.subscribe(topic)
+
+
+def basic_subscribe(topic="default_topic", on_message_function=on_message):
+    subscriber = mqtt.Client("Basic")
+    subscriber.on_message = on_message_function
+    subscriber.connect("localhost", 1883)
     subscriber.subscribe(topic)
