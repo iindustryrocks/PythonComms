@@ -28,8 +28,8 @@ def on_message(client, userdata, message):
     print("message retain flag=", message.retain)
 
 
-def loop_forever_thread(client):
-    client.loop_forever()
+def loop_forever_thread(arg):
+    arg.loop_forever()
 
 
 def subscribe(broker_address="localhost", port=1883, topic="default_topic", client_name="default_client",
@@ -38,7 +38,7 @@ def subscribe(broker_address="localhost", port=1883, topic="default_topic", clie
     subscriber.on_message = on_message_function
     subscriber.connect(broker_address, port)
     subscriber.subscribe(topic)
-    thread = Thread(target=loop_forever_thread, client=subscriber)
+    thread = Thread(target=loop_forever_thread, args=(subscriber, ))
 
 
 def basic_subscribe(topic="default_topic", on_message_function=on_message):
