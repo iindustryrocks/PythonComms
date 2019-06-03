@@ -11,10 +11,10 @@ remote_message_handler = None
 def i2c_request_handler_example(id, tick):
     global pi
     global slave_addr
-    global message_handler
+    global remote_message_handler
     status, bytes_read, data = pi.bsc_i2c(slave_addr)  # pi.bsc_i2c(slave_addr, data=" ACK")
     if bytes_read:
-        message_handler(data)
+        remote_message_handler(data)
 
 
 def disconnect():
