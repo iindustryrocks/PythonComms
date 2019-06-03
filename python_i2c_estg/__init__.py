@@ -4,7 +4,7 @@ import time
 pi = None
 slave_addr = None
 int_handler = None
-message_handler = None
+remote_message_handler = None
 
 
 
@@ -31,9 +31,10 @@ def default_message_handler(message):
 def connect(slave_addr=0x04, message_handler=default_message_handler, keep_alive=False, keep_alive_time=500):
     global pi
     global int_handler
+    global remote_message_handler
 
     pi = pigpio.pi()  # inicia a conexao
-    message_handler=message_handler()
+    remote_message_handler=message_handler
     int_handler = pi.event_callback(pigpio.EVENT_BSC, i2c_request_handler_example)
     pi.bsc_i2c(slave_addr)
     if not keep_alive:
