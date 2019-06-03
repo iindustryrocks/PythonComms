@@ -33,7 +33,7 @@ def connect(slave_addr=0x04, message_handler=default_message_handler, keep_alive
     global int_handler
 
     pi = pigpio.pi()  # inicia a conexao
-    message_handler=message_handler
+    message_handler=message_handler()
     int_handler = pi.event_callback(pigpio.EVENT_BSC, i2c_request_handler_example)
     pi.bsc_i2c(slave_addr)
     if not keep_alive:
