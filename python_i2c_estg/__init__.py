@@ -24,8 +24,11 @@ def disconnect():
     pi.bsc_i2c(0)
     pi.stop()
 
+def default_message_handler(message):
+    print(message)
 
-def connect(slave_addr=0x04, message_handler, keep_alive=False, keep_alive_time=500):
+
+def connect(slave_addr=0x04, message_handler=default_message_handler, keep_alive=False, keep_alive_time=500):
     global pi
     global int_handler
 
