@@ -7,13 +7,13 @@ int_handler = None
 remote_message_handler = None
 
 
+def i2c_interrupt(id, tick):
+   global pi
+   global slave_addr
 
-def i2c_request_handler_example(id, tick):
-    global pi
-    global slave_addr
-    global remote_message_handler
-    status, bytes_read, data = pi.bsc_i2c(slave_addr)  # pi.bsc_i2c(slave_addr, data=" ACK")
-    if bytes_read:
+   status, bytes_read, data = pi.bsc_i2c(slave_addr)
+
+   if bytes_read:
         remote_message_handler(data)
 
 
@@ -33,10 +33,11 @@ def connect(slave_addr=0x04, message_handler=default_message_handler, keep_alive
     global int_handler
     global remote_message_handler
 
-    pi = pigpio.pi()  # inicia a conexao
+    pi = pigpio.pi()
     remote_message_handler=message_handler
-    int_handler = pi.event_callback(pigpio.EVENT_BSC, i2c_request_handler_example)
+    int_handler = pi.event_callback(pigpio.EVENT_BSC, i2c_interrupt)
     pi.bsc_i2c(slave_addr)
+    print("Listening")
     if not keep_alive:
         time.sleep(keep_alive_time)
         disconnect()
